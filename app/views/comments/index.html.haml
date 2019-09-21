@@ -2,11 +2,13 @@
   .flash-box
   .wrapper
     .chat-side
-      = render "left-header"
-      = render "left-main"
+      -# = render "left-header"
+      -# = render "left-main"
+      =render"shared/side_bar"
+      
     
     .chat-main
       = render "right-header"
       = render "right-main"
       = render "right-footer"
-   
+    

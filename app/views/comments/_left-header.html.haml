@@ -1,13 +1,15 @@
-.chat-side
-  .side-header
-    .side-header__box
-      %p.side-header__box__user-name
-      yuri
+-# .chat-side
+-#   .side-header
+-#     .side-header__box
+-#       %p.side-header__box__user-name
+-#       yuri
 
-      %ul.side-header__iconbox__menu
-        %li.side-header__box__menu__new-group
-          = link_to '#' do
-            %i.fa.fa-edit
-        %li.side-header__box__menu__edit-user
-          = link_to '#' do
-            %i.fa.fa-cog
+-#       %ul.side-header__iconbox__menu
+-#         %li.side-header__box__menu__new-group
+-#           = link_to new_group_path do
+-#             = fa_icon 'pencil-square-o', class: 'icon'
+-#             -# %i.fa.fa-edit
+-#         %li.side-header__box__menu__edit-user
+-#           = link_to edit_user_path(current_user) do
+-#             = fa_icon 'cog', class: 'icon'
+-#             -# %i.fa.fa-cog
