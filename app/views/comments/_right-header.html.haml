@@ -7,3 +7,5 @@
       
   = link_to 'Edit' do
     .main-header__edit-btn Edit
+    .main-header__edit-btn
+      = link_to "Edit", edit_group_path(@group.id), class: "btn"

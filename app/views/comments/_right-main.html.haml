@@ -1,13 +1,13 @@
 .comments 
-  .comment
-    .comment__upper-info
-      = @comments.each do |comment|
+  = @comments.each do |comment|
+    .comment
+      .comment__upper-info
         .comment__upper-info__talker
           = comment.user.name
         .comment__upper-info__date 
           = comment.created_at.strftime("%Y/%m/%d %H:%M")
-        .comment__text 
-        - if comment.name.present?
-          .lower-comment__content
-            = comment.name
-        = image_tag comment.image.url, class: 'lower-comment__image' if comment.image.present?  
+      .comment__text 
+      - if comment.name.present?
+        .lower-comment__content
+          = comment.name
+      = image_tag comment.image.url, class: 'lower-comment__image' if comment.image.present?  

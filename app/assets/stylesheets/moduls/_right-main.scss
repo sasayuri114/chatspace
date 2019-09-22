@@ -3,29 +3,26 @@
   padding: 46px 40px;
   background-color: #fafafa;
   overflow: scroll;
-
-  .comment {
-    padding-bottom: 40px;
-    
-    &__upper-info {
-      
-      margin-bottom: 10px;
-      
+}
+.comment{
+  padding-bottom: 40px;
+  &__upper-info {
+    margin-bottom: 10px; 
+    display:flex;    
     &__talker {
-        color: #54434d;
-        font-size: 16px;
-        font-weight: bold;     
+      color: #54434d;
+      font-size: 16px;
+      font-weight: bold; 
     } 
     &__date {
         color: #999999;
         font-size: 12px;
-        margin-left: 20px;   
+        margin-left: 20px;  
     } 
-    // &__text {
-    //   color: #434a54;
-    //   font-size: 14px;
-    //   margin-bottom: 10px;
-    // }    
-    }  
+  }
+  &__text {
+    color: #434a54;
+    font-size: 14px;
+    margin-bottom: 10px;
   }  
 }
