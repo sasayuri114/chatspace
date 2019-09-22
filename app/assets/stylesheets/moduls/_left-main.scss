@@ -6,13 +6,14 @@
 
   .group {
     margin-bottom: 40px;
-    &__group-name { 
+    &__name { 
       font-size: 15px;
+      margin-top: 20px;
       margin-bottom: 5px;
       color: white;
     }  
-    &__latest-message {
-      
+    &__message {
+      margin-bottom: 40px;
       font-size: 11px;
       color: white;
     }
