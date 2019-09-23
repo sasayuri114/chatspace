@@ -12,7 +12,7 @@
 -#     %input.submit-btn{"data-disable-with":"Send", name:"commit", type:"submit", value:"Send"}/
 
 .form
-  = form_for [@group, @comment] do |f|
+  = form_for [@group, @comment], id: "new_comment" do |f|
     = f.text_field :name, class: 'new_comment', placeholder: 'type a comment', id: 'new_comment'
     .input-box
       = f.label :image, class: 'input-box__image' do
