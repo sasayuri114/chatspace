@@ -36,6 +36,7 @@ $(document).on('turbolinks:load', function() {
     .done(function(data){
       var html = buildHTML(data);
       $('.comments').append(html);
+      $("#new_comment")[0].reset();
       $('.form__comment').val('');
       $('.form__submit').prop('disabled', false);
       
