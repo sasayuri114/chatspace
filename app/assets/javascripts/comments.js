@@ -1,6 +1,5 @@
 $(document).on('turbolinks:load', function() {
   function buildHTML(comment){
-    var content = comment.name ? `${ comment.name}` : "";
     var image = comment.image ? `<img src= ${ comment.image }>` : "";
     var html = `<div class="comment">
                     <div class="comment__upper-info">
@@ -13,7 +12,7 @@ $(document).on('turbolinks:load', function() {
                     </div>
                     <div class = "comment__text"> 
                       <div class="lower-comment__content">
-                          ${content}
+                          ${comment.content}
                       </div>
                       <div class ="lower-comment__image">
                           ${image}
@@ -34,16 +33,20 @@ $(document).on('turbolinks:load', function() {
       processData: false,
       contentType: false
     })  
-    // function scroll() {
-    //   $('.comments').animate({scrollTop: $('.comment')[0].scrollHeight});
-    // }
     .done(function(data){
       var html = buildHTML(data);
       $('.comments').append(html);
       $('.form__comment').val('');
       $('.form__submit').prop('disabled', false);
-      $('.comments').animate({scrollTop: $('.comments')[0].scrollHeight}, 'fast');
-      // scroll()
+      
+      scrollBottom();function 
+      scrollBottom(){
+        var target = $('.comment').last();
+        var position = target.offset().top + $('.comments').scrollTop();
+        $('.comments').animate({
+          scrollTop: position
+        }, 300, 'swing');
+      }
     })
     .fail(function(data){
       alert('エラー が発生したためメッセージは送信出来ませんでした');
