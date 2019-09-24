@@ -1,76 +1,69 @@
-$(function() {  
-  
-  var search_user_list = $("#user-search-result");
-  var add_user_list = $(".chat-group-users.js-add-user");
-
-  function searchUser(user){
-    var html = `<div class="chat-group-user clearfix">
-                  <p class="chat-group-user__name">${ user.name }</p>
-                  <a class="user-search-add chat-group-user__btn chat-group-user__btn--add" data-user-id="${ user.id }", data-user-name="${ user.name }">追加</div>
+$(function() {
+  function appendUsers(user) {
+    var html = `<div class="chat-group-user">
+                  <p class="chat-group-user__name">
+                    ${ user.name }
+                  </p>
+                  <p class="chat-group-user__btn chat-group-user__btn--add" data-id = ${ user.id } data-name = ${ user.name }>
+                    追加
+                  </p>
                 </div>`;
-    search_user_list.append(html);
-    return html;
+    $('#user-search-result').append(html);
   }
-
-  function alertNoUser(err_msg) {
-    var html = `<div class="chat-group-user clearfix">
-                  ${ err_msg }
-                </div>`;            
-    search_user_list.append(html);
-    return html;
+  function notUser(){
+    var html = `<div class="chat-group-user">
+                  <p class="chat-group-user__name">
+                  検索結果はありません。
+                  </p>
+                </div>`;
+    $('#user-search-result').append(html);
   }
+  function addUsers(user_name, user_id) {
+    var html = `<div class="chat-group-user">
+                  <input type = "hidden", value = ${ user_id }, name = "group[user_ids][]", id ="group_user_ids_${user_id}">
+                  <p class="chat-group-user__name">
+                    ${user_name}
+                  </p>
+                  <p class="chat-group-user__btn chat-group-user__btn--remove">
+                    削除
+                  </p>
+                </div>`;
+    $('#chat-group-users').append(html);
+  }
+  $(function() {
+    $(".chat-group-form__input").on("input", function() {
+      // $("#user-search-result").children().remove();
+      var user = $("#user-search-field").val();
 
-  function addUser(user) {
-    var html =`<div class='chat-group-user clearfix js-chat-member' id="${ user.id }">
-                <input name='group[user_ids][]' type='hidden' value="${ user.id }">
-                <p class='chat-group-user__name'>${ user.name }</p>
-                <a class='user-search-remove chat-group-user__btn chat-group-user__btn--remove js-remove-btn'>削除</div>
-              </div>`;
-    add_user_list.append(html);
-    return html;
-  }  
-  
-  $(function(){  
-    $("#user-search-field").on("keyup", function() {
-    var input = $("#user-search-field").val();
-    var users_id = [];
-    appendUserId(users_id);
-
-    $.ajax({
-      type: 'GET',
-      url: '/users',
-      data: { keyword: input },
-      dataType: 'json'
-    })
-
-    .done(function(users) {
-      $("#user-search-result").empty();
-        if (users.length !== 0) {
-          users.forEach(function(user){
-            searchUser(user);
-          });
-        }
-        else {
-          alertNoUser("一致するユーザーが見つかりません");
-        }
-      })
-    .fail(function() {
-      alert('ユーザー検索に失敗しました');
-    })
-  });   
-
-  $(function(){ 
-    $(document).on("click", ".user-search-add.chat-group-user__btn--add", function() {
-      var id = $(this).attr('data-user-id');
-      var name = $(this).attr("data-user-name");
-      var hashUser = {id: id, name: name};
-      $(this).closest('div').remove();
-      addUser(hashUser);
+        $.ajax({
+          type: 'GET',
+          url: '/users',
+          data: { user: user },
+          dataType: 'json'
+        })
+      .done(function(users) {
+          $("#user_search_result").empty();
+            if (users.length !== 0) {
+              users.forEach(function(user){
+                var html = appendUsers(user);
+              })
+            } else {
+              var html = notUser();
+            }
+         })
+      .fail(function() {
+        alert('ユーザー検索に失敗しました');
+      });
     });
-
-    $(document).on("click", ".user-search-remove.chat-group-user__btn--remove.js-remove-btn", function() {
-       $(this).closest('div').remove();
-    });   
-  });  
-});  
-});  
+  });
+  $(function() {
+    $("#user-search-result").on("click", ".chat-group-user__btn--add", function() {
+      var user_name = $(this).data('name');
+      var user_id = $(this).data('id');
+      var html = addUsers(user_name, user_id);
+    });
+    $("#chat-group-users").on("click", ".chat-group-user__btn--remove", function(){
+      $(this).parent().remove();
+    });
+  });
+});

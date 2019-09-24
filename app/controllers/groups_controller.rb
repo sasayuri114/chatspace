@@ -18,6 +18,10 @@ class GroupsController < ApplicationController
     end
   end
 
+  def edit
+    # @users = User.all
+  end
+
   def update
     if @group.update(group_params)
       redirect_to group_comments_path(@group), notice: 'グループを編集しました'
