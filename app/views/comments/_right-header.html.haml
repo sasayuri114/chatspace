@@ -4,8 +4,8 @@
       =@group.name
     %ul.main-header__left-box__member-list
       Member：
-      
-  = link_to 'Edit' do
-    .main-header__edit-btn Edit
-    .main-header__edit-btn
-      = link_to "Edit", edit_group_path(@group.id), class: "btn"
+      - @group.users.each do |user|
+        = user.name
+  = link_to edit_group_path(@group), class: "btn" do
+    .main-header__edit-btn 
+      Edit
