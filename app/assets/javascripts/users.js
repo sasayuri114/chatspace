@@ -59,7 +59,8 @@ $(function() {
     $("#user-search-result").on("click", ".chat-group-user__btn--add", function() {
       var user_name = $(this).data('name');
       var user_id = $(this).data('id');
-      var html = addUsers(user_name, user_id);
+      addUsers(user_name, user_id);
+      $(this).parent().remove();
     });
     $("#chat-group-users").on("click", ".chat-group-user__btn--remove", function(){
       $(this).parent().remove();
