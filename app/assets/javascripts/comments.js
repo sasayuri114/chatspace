@@ -1,7 +1,7 @@
 $(document).on('turbolinks:load', function() {
   function buildHTML(comment){
     var image = comment.image ? `<img src= ${ comment.image }>` : "";
-    var html = `<div class="comment">
+    var html = `<div class="comment" data-id="${comment.id}">
                     <div class="comment__upper-info">
                         <div class="comment__upper-info__talker">
                             ${ comment.user_name }
@@ -54,4 +54,30 @@ $(document).on('turbolinks:load', function() {
       $('.form__submit').prop('disabled', false);
     })      
   }) 
-})
+  //自動更新
+  function reloadComments(){
+    var last_comment_id = $('.timeline__bodyList').last().data('id');
+    var href = 'api/comments'
+    $.ajax({
+    url: href,
+    type: 'GET',
+    data:{id: last_comment_id},
+    dataType: 'json'
+    })
+    .done(function(comments){
+      var insertHTML = '';
+      console.log(insertHTML);
+      comments.forEach(function(comment){
+        var insertHTML = buildHTML(comment)
+        $('comment').append(insertHTML)
+      });
+      $('.timeline__body').animate({scrollTop: $('.timeline__body')[0].scrollHeight}, 'fast');
+    })
+
+    .fail(function(){
+      console.log('error'); 
+    });
+  };
+  setInterval(reloadComments, 5000);
+  
+});
