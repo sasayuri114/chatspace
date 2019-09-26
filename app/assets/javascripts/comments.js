@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(function() {
   function buildHTML(comment){
     var image = comment.image ? `<img src= ${ comment.image }>` : "";
     var html = `<div class="comment" data-id="${comment.id}">
@@ -39,45 +39,35 @@ $(document).on('turbolinks:load', function() {
       $("#new_comment")[0].reset();
       $('.form__comment').val('');
       $('.form__submit').prop('disabled', false);
-      
-      scrollBottom();function 
-      scrollBottom(){
-        var target = $('.comment').last();
-        var position = target.offset().top + $('.comments').scrollTop();
-        $('.comments').animate({
-          scrollTop: position
-        }, 300, 'swing');
-      }
+      $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
     })
     .fail(function(data){
-      alert('エラー が発生したためメッセージは送信出来ませんでした');
       $('.form__submit').prop('disabled', false);
-    })      
+    })
   }) 
-  //自動更新
-  function reloadComments(){
-    var last_comment_id = $('.timeline__bodyList').last().data('id');
-    var href = 'api/comments'
-    $.ajax({
-    url: href,
-    type: 'GET',
-    data:{id: last_comment_id},
-    dataType: 'json'
-    })
-    .done(function(comments){
-      var insertHTML = '';
-      console.log(insertHTML);
-      comments.forEach(function(comment){
-        var insertHTML = buildHTML(comment)
-        $('comment').append(insertHTML)
-      });
-      $('.timeline__body').animate({scrollTop: $('.timeline__body')[0].scrollHeight}, 'fast');
-    })
 
-    .fail(function(){
-      console.log('error'); 
-    });
-  };
-  setInterval(reloadComments, 5000);
-  
+  function reloadMessages() {
+    if (window.location.href.match(/\/groups\/\d+\/comments/)){
+      var last_comment_id = $('.comment:last').data("id");
+      $.ajax({ 
+        url: "api/comments",  
+        type: 'get', 
+        dataType: 'json', 
+        data: {last_id: last_comment_id} 
+      })
+      .done(function(comments){  
+        console.log(comments);
+        var insertHTML = '';
+        comments.forEach(function (comment) {
+          insertHTML += buildHTML(comment); 
+          $('.comments').append(insertHTML);
+        })
+        $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
+      })
+      .fail(function () {
+        alert('自動更新に失敗しました');
+      })
+    }
+  }
+  setInterval(reloadMessages, 5000);
 });
