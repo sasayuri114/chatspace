@@ -1,7 +1,7 @@
-$(document).on('turbolinks:load', function() {
+$(function() {
   function buildHTML(comment){
     var image = comment.image ? `<img src= ${ comment.image }>` : "";
-    var html = `<div class="comment">
+    var html = `<div class="comment" data-id="${comment.id}">
                     <div class="comment__upper-info">
                         <div class="comment__upper-info__talker">
                             ${ comment.user_name }
@@ -39,19 +39,35 @@ $(document).on('turbolinks:load', function() {
       $("#new_comment")[0].reset();
       $('.form__comment').val('');
       $('.form__submit').prop('disabled', false);
-      
-      scrollBottom();function 
-      scrollBottom(){
-        var target = $('.comment').last();
-        var position = target.offset().top + $('.comments').scrollTop();
-        $('.comments').animate({
-          scrollTop: position
-        }, 300, 'swing');
-      }
+      $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
     })
     .fail(function(data){
-      alert('エラー が発生したためメッセージは送信出来ませんでした');
       $('.form__submit').prop('disabled', false);
-    })      
+    })
   }) 
-})
+
+  function reloadMessages() {
+    if (window.location.href.match(/\/groups\/\d+\/comments/)){
+      var last_comment_id = $('.comment:last').data("id");
+      $.ajax({ 
+        url: "api/comments",  
+        type: 'get', 
+        dataType: 'json', 
+        data: {last_id: last_comment_id} 
+      })
+      .done(function(comments){  
+        console.log(comments);
+        var insertHTML = '';
+        comments.forEach(function (comment) {
+          insertHTML += buildHTML(comment); 
+          $('.comments').append(insertHTML);
+        })
+        $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
+      })
+      .fail(function () {
+        alert('自動更新に失敗しました');
+      })
+    }
+  }
+  setInterval(reloadMessages, 5000);
+});
