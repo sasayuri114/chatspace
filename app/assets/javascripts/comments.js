@@ -61,8 +61,9 @@ $(function() {
         comments.forEach(function (comment) {
           insertHTML += buildHTML(comment); 
           $('.comments').append(insertHTML);
+          $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
         })
-        $('.comments').animate({ scrollTop: $('.comments')[0].scrollHeight }, "first");
+       
       })
       .fail(function () {
         alert('自動更新に失敗しました');
