@@ -4,8 +4,8 @@
       .comment__upper-info
         .comment__upper-info__talker
           = comment.user.name
-        .comment__upper-info__date 
-          = comment.created_at.strftime("%Y/%m/%d %H:%M")
+        .comment__upper-info__date
+          = comment.created_at.strftime('%Y/%m/%d %H:%M:%S')
       .comment__text 
       - if comment.name.present?
         .lower-comment__content
